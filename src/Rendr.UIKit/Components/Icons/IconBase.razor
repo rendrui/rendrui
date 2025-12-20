@@ -1,0 +1,31 @@
+@code {
+    [Parameter] public int StrokeWidth { get; set; } = 2;
+    [Parameter] public string Color { get; set; } = "currentColor";
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    protected string CssClass
+    {
+        get
+        {
+            var userClass = AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("class", out var c) ? c?.ToString()
+            ?? "" : "";
+
+            bool hasWidth = userClass.Split(' ', StringSplitOptions.RemoveEmptyEntries).Any(c => c.StartsWith("w-"));
+            bool hasHeight = userClass.Split(' ', StringSplitOptions.RemoveEmptyEntries).Any(c => c.StartsWith("h-"));
+
+            var classes = new List<string>();
+
+            if (!hasWidth) { classes.Add("w-6"); }
+            if (!hasHeight) { classes.Add("h-6"); }
+
+            if (!string.IsNullOrEmpty(userClass))
+            {
+                classes.InsertRange(0, userClass.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+            }
+
+            return string.Join(" ", classes);
+        }
+    }
+}
