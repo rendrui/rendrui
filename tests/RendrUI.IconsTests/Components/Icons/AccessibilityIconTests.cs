@@ -1,8 +1,11 @@
 using RendrUI.Icons;
+using RendrUI.IconsTests.Components.Base;
 using Shouldly;
 
-public class AArrowDownIconTests
-    : IconContractTests<AArrowDownIcon>
+namespace RendrUI.IconsTests.Components;
+
+public class AccessibilityIconTests
+    : IconContractTests<AccessibilityIcon>
 {
     protected override int ExpectedPathCount => 4;
 

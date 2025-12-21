@@ -1,6 +1,7 @@
-using Xunit;
 using Shouldly;
 using Microsoft.AspNetCore.Components;
+
+namespace RendrUI.IconsTests.Components.Base;
 
 public abstract class IconContractTests<TIcon> : IconTestContext
     where TIcon : IComponent
@@ -22,6 +23,7 @@ public abstract class IconContractTests<TIcon> : IconTestContext
 
         var css = cut.Find("svg").GetAttribute("class");
 
+        css.ShouldNotBeNull();
         css.ShouldContain("w-6");
         css.ShouldContain("h-6");
     }
@@ -29,9 +31,12 @@ public abstract class IconContractTests<TIcon> : IconTestContext
     [Fact]
     public void Applies_Stroke_And_StrokeWidth()
     {
-        var cut = RenderComponent<TIcon>(p => p
-            .Add(icon => (object)icon.Color, "red")
-            .Add(icon => (object)icon.StrokeWidth, 4));
+        // Use AddUnmatched to set parameters by name since TIcon may not expose them directly
+        var cut = Render<TIcon>(parameters =>
+        {
+            parameters.AddUnmatched("Color", "red");
+            parameters.AddUnmatched("StrokeWidth", 4);
+        });
 
         var svg = cut.Find("svg");
 
