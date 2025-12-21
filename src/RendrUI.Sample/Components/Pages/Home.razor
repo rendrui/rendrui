@@ -1,0 +1,25 @@
+﻿@page "/"
+@using RendrUI.Components.Button
+
+<PageTitle>Home</PageTitle>
+
+<h1 class="text-red-500 font-bold text-3xl">Hello, world!</h1>
+
+
+<span class="text-lg font-bold mb-4">Button Samples</span>
+
+<div class="flex flex-wrap items-center gap-4 md:flex-col">
+    <Button Variant="ButtonVariant.Default" class="min-w-32">Default</Button>
+
+    <Button Variant="ButtonVariant.Secondary" class="min-w-32">Secondary</Button>
+
+    <Button Variant="ButtonVariant.Destructive" class="min-w-32">Destructive</Button>
+
+    <Button Variant="ButtonVariant.Ghost" class="min-w-32">Ghost</Button>
+
+    <Button Variant="ButtonVariant.Link" class="min-w-32">Link</Button>
+
+    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon">
+        <AlignCenterVerticalIcon />
+    </Button>
+</div>
