@@ -13,9 +13,6 @@ internal static class ButtonClasses
         [ButtonVariant.Default] =
             "bg-primary text-primary-foreground hover:bg-primary/90",
 
-        // [ButtonVariant.Destructive] =
-        //     "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-
         [ButtonVariant.Destructive] =
             "bg-red-500 text-white hover:bg-red-500/90",
 
