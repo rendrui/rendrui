@@ -1,0 +1,18 @@
+@namespace RendrUI.Components.Card
+
+
+<div data-slot="card-footer" class="@CssClass">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public string? Class { get; set; }
+    [Parameter]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass =>
+    CardClasses.Build(CardType.CardFooter, AdditionalAttributes?["class"]?.ToString());
+}
