@@ -1,18 +1,29 @@
 @namespace RendrUI.Components.Card
+@using System.Collections.ObjectModel
 
 
-<div data-slot="card-header" class="@CssClass">
+<div @attributes="AdditionalAttributes" data-slot="card-header" class="@CssClass">
     @ChildContent
 </div>
 
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    [Parameter]
-    public string? Class { get; set; }
-    [Parameter]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private string CssClass =>
-    CardClasses.Build(CardType.CardHeader, AdditionalAttributes?["class"]?.ToString());
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class?.ToString() ?? string.Empty;
+            }
+            return CardClasses.Build(CardType.CardHeader, additionalClass);
+        }
+    }
 }
