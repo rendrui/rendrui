@@ -13,13 +13,13 @@ internal static class NavigationMenuClasses
             "rui-nav-menu relative z-10",
 
         [NavigationMenuType.NavigationMenuList] =
-            "rui-nav-menu-list flex space-x-4",
+            "rui-nav-menu-list flex",
 
         [NavigationMenuType.NavigationMenuItem] =
             "rui-nav-menu-item relative",
 
         [NavigationMenuType.NavigationMenuTrigger] =
-            "rui-nav-menu-trigger flex flex-row items-center cursor-pointer gap-1 px-4 py-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "rui-nav-menu-trigger flex flex-row items-center gap-1 px-4 py-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
 
         [NavigationMenuType.NavigationMenuContent] =
             "rui-nav-menu-content absolute top-full left-0 mt-1 w-56 rounded-md shadow-lg bg-white border border-gray-200 z-50 p-2"
