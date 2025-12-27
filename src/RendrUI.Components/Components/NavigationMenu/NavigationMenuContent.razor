@@ -23,6 +23,13 @@
     private bool ShouldShowContent => ParentItem is not null && ParentItem.IsOpen;
 
 
+    protected override void OnInitialized()
+    {
+        ParentItem?.RegisterContent();
+        base.OnInitialized();
+    }
+
+
     private string CssClass
     {
         get

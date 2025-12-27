@@ -15,6 +15,7 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    internal bool HasContent { get; private set; } = false;
 
     internal bool IsOpen { get; set; } = false;
     private CancellationTokenSource? _cts;
@@ -32,6 +33,12 @@
 
             return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuItem, additionalClass);
         }
+    }
+
+    internal void RegisterContent()
+    {
+        HasContent = true;
+        StateHasChanged();
     }
 
     internal void ToggleMenu()
