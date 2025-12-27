@@ -6,7 +6,7 @@
 @if (ShouldShowContent)
 {
     <div @attributes="AdditionalAttributes" class=@CssClass @onmouseover="() => ParentItem?.CancelCloseMenu()"
-        @onmouseleave="() => ParentItem?.StartCloseMenuDelay()">
+        @onmouseleave="(e) => ParentItem?.StartCloseMenuDelay(e, activatedFromContent)!">
         @ChildContent
     </div>
 }
@@ -21,6 +21,7 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
     private bool ShouldShowContent => ParentItem is not null && ParentItem.IsOpen;
+    private bool activatedFromContent = true;
 
 
     protected override void OnInitialized()

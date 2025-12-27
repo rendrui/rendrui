@@ -1,8 +1,9 @@
 @namespace RendrUI.Components.NavigationMenu
+@using Microsoft.JSInterop
 @using RendrUI.Components.Components.NavigationMenu
 
-<li @attributes="AdditionalAttributes" class="@CssClass" @onmouseover="CancelCloseMenu"
-    @onmouseleave="StartCloseMenuDelay">
+<li @ref="myLi" @attributes="AdditionalAttributes" class="@CssClass" @onmouseover="CancelCloseMenu"
+    @onmouseleave="(e) => StartCloseMenuDelay(e)">
     <CascadingValue Value="this">
         @ChildContent
     </CascadingValue>
@@ -15,10 +16,14 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
-    internal bool HasContent { get; private set; } = false;
 
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    internal bool HasContent { get; private set; } = false;
     internal bool IsOpen { get; set; } = false;
     private CancellationTokenSource? _cts;
+    private ElementReference myLi;
 
     private string CssClass
     {
@@ -61,11 +66,24 @@
         StateHasChanged();
     }
 
-    public void StartCloseMenuDelay()
+    public async Task StartCloseMenuDelay(MouseEventArgs e, bool fromContent = false)
     {
-        CloseMenuWithDelay();
+        var rect = await JS.InvokeAsync<BoundingClientRect>("getBoundingClientRect", myLi);
+        if (e.ClientY > rect.Bottom && !fromContent)
+        {
+            CloseMenuWithDelay();
+            return;
+        }
+
+        CloseMenuWithoutDelay();
     }
 
+    internal void CloseMenuWithoutDelay()
+    {
+        _cts?.Cancel();
+        IsOpen = false;
+        StateHasChanged();
+    }
 
     internal async void CloseMenuWithDelay()
     {
@@ -80,5 +98,24 @@
         }
         catch (TaskCanceledException)
         { }
+    }
+
+    private class BoundingClientRect
+    {
+        public double Left { get; set; }
+        public double Top { get; set; }
+        public double Right { get; set; }
+        public double Bottom { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+    }
+
+    private enum MouseLeaveDirection
+    {
+        Left,
+        Right,
+        Top,
+        Bottom,
+        Unknown
     }
 }
