@@ -1,0 +1,77 @@
+@namespace RendrUI.Components.NavigationMenu
+@using RendrUI.Components.Components.NavigationMenu
+
+<li @attributes="AdditionalAttributes" class="@CssClass" @onmouseover="CancelCloseMenu"
+    @onmouseleave="StartCloseMenuDelay">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</li>
+
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    internal bool IsOpen { get; set; } = false;
+    private CancellationTokenSource? _cts;
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuItem, additionalClass);
+        }
+    }
+
+    internal void ToggleMenu()
+    {
+        IsOpen = !IsOpen;
+    }
+
+
+    internal void OpenMenu()
+    {
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    public void CancelCloseMenu()
+    {
+        _cts?.Cancel();
+        _cts = null;
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    public void StartCloseMenuDelay()
+    {
+        CloseMenuWithDelay();
+    }
+
+
+    internal async void CloseMenuWithDelay()
+    {
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(200, _cts.Token);
+            IsOpen = false;
+            StateHasChanged();
+        }
+        catch (TaskCanceledException)
+        { }
+    }
+}

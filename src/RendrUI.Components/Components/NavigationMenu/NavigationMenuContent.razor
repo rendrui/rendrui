@@ -1,0 +1,39 @@
+@namespace RendrUI.Components.NavigationMenu
+@using System.Runtime.InteropServices.Marshalling
+@using RendrUI.Components.Components.NavigationMenu
+
+
+@if (ShouldShowContent)
+{
+    <div @attributes="AdditionalAttributes" class=@CssClass @onmouseover="() => ParentItem?.CancelCloseMenu()"
+        @onmouseleave="() => ParentItem?.StartCloseMenuDelay()">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    private NavigationMenuItem? ParentItem { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    private bool ShouldShowContent => ParentItem is not null && ParentItem.IsOpen;
+
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuContent, additionalClass);
+        }
+    }
+}

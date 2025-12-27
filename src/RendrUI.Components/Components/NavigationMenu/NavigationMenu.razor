@@ -1,0 +1,28 @@
+@namespace RendrUI.Components.NavigationMenu
+@using RendrUI.Components.Components.NavigationMenu
+
+<div @attributes="AdditionalAttributes" data-slot="nav-menu" class="@CssClass">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes != null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class?.ToString() ?? string.Empty;
+            }
+
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenu, additionalClass);
+        }
+    }
+}

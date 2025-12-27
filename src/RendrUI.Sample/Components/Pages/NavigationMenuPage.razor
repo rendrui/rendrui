@@ -1,0 +1,27 @@
+@page "/navigation-menu"
+
+@using RendrUI.Components.NavigationMenu
+
+<h3 class="text-2xl font-bold mb-4">NavigationMenu Component</h3>
+
+
+<NavigationMenu>
+    <NavigationMenuList>
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Product A</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Product B</a></li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>About</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <p class="p-4">About content here</p>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+    </NavigationMenuList>
+</NavigationMenu>
