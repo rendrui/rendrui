@@ -10,6 +10,8 @@
     public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter]
+    public NavigationMenuViewPort ViewPort { get; set; } = NavigationMenuViewPort.Auto;
 
     private string CssClass
     {

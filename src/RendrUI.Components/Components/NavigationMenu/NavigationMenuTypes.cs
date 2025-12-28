@@ -9,3 +9,10 @@ internal enum NavigationMenuType
     NavigationMenuTrigger,
     NavigationMenuContent
 }
+
+public enum NavigationMenuViewPort
+{
+    Auto,
+    Desktop,
+    Mobile
+}
