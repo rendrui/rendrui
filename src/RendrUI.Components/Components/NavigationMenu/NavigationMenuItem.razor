@@ -1,9 +1,9 @@
 @namespace RendrUI.Components.NavigationMenu
 @using Microsoft.JSInterop
-@using RendrUI.Components.Components.NavigationMenu
 
-<li @ref="myLi" @attributes="AdditionalAttributes" class="@CssClass" @onmouseover="CancelCloseMenu"
-    @onmouseleave="(e) => StartCloseMenuDelay(e)">
+<li @ref="myLi" @attributes="AdditionalAttributes" class="@CssClass"
+    @onmouseover="HandleMouseOver"
+    @onmouseleave="HandleMouseLeave">
     <CascadingValue Value="this">
         @ChildContent
     </CascadingValue>
@@ -11,6 +11,9 @@
 
 
 @code {
+    [CascadingParameter(Name = "IsMobileMode")]
+    public bool IsMobileMode { get; set; }
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
@@ -36,7 +39,7 @@
                 additionalClass = @class.ToString() ?? string.Empty;
             }
 
-            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuItem, additionalClass);
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuItem, additionalClass, IsMobileMode);
         }
     }
 
@@ -49,13 +52,38 @@
     internal void ToggleMenu()
     {
         IsOpen = !IsOpen;
+        StateHasChanged();
     }
 
 
     internal void OpenMenu()
     {
+        // In mobile mode, use toggle behavior
+        if (IsMobileMode)
+        {
+            ToggleMenu();
+            return;
+        }
+
+        // Desktop mode - open on hover
         IsOpen = true;
         StateHasChanged();
+    }
+
+    private void HandleMouseOver()
+    {
+        if (!IsMobileMode)
+        {
+            CancelCloseMenu();
+        }
+    }
+
+    private async Task HandleMouseLeave(MouseEventArgs e)
+    {
+        if (!IsMobileMode)
+        {
+            await StartCloseMenuDelay(e);
+        }
     }
 
     public void CancelCloseMenu()
@@ -87,6 +115,8 @@
 
     internal async void CloseMenuWithDelay()
     {
+        if (IsMobileMode) return; // No delay in mobile mode
+
         _cts?.Cancel();
         _cts = new CancellationTokenSource();
 

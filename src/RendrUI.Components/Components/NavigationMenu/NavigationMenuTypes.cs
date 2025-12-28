@@ -1,4 +1,4 @@
-namespace RendrUI.Components.Components.NavigationMenu;
+namespace RendrUI.Components.NavigationMenu;
 
 
 internal enum NavigationMenuType
@@ -7,7 +7,11 @@ internal enum NavigationMenuType
     NavigationMenuList,
     NavigationMenuItem,
     NavigationMenuTrigger,
-    NavigationMenuContent
+    NavigationMenuContent,
+    BurgerButton,
+    Drawer,
+    Backdrop,
+    DrawerCloseButton
 }
 
 public enum NavigationMenuViewPort

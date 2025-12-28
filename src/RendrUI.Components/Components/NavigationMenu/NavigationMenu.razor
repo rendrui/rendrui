@@ -1,30 +1,41 @@
 @namespace RendrUI.Components.NavigationMenu
-@using RendrUI.Components.Components.NavigationMenu
+@using RendrUI.Icons
+@implements IAsyncDisposable
 
 <div @attributes="AdditionalAttributes" data-slot="nav-menu" class="@CssClass">
-    @ChildContent
-</div>
+    @* Desktop Navigation - Hidden on Mobile *@
+    <div class="@DesktopContainerClass">
+        <CascadingValue Value="false" Name="IsMobileMode">
+            @ChildContent
+        </CascadingValue>
+    </div>
 
-@code {
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)]
-    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
-    [Parameter]
-    public NavigationMenuViewPort ViewPort { get; set; } = NavigationMenuViewPort.Auto;
+    @* Mobile Burger Button - Visible on Mobile Only *@
+    <button class="@BurgerButtonClass" @onclick="ToggleMobileMenu" type="button" aria-label="Toggle navigation menu">
+        <MenuIcon />
+    </button>
 
-    private string CssClass
+    @* Mobile Drawer + Backdrop *@
+    @if (IsMobileMenuOpen)
     {
-        get
-        {
-            var additionalClass = string.Empty;
-            if (AdditionalAttributes != null &&
-            AdditionalAttributes.TryGetValue("class", out var @class))
-            {
-                additionalClass = @class?.ToString() ?? string.Empty;
-            }
+        @* Backdrop Overlay *@
+        <div class="@BackdropClass" @onclick="CloseMobileMenu"></div>
 
-            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenu, additionalClass);
-        }
+        @* Drawer Aside *@
+        <aside class="@DrawerClass" data-slot="nav-menu-drawer">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <span class="text-lg font-semibold">Menu</span>
+                <button class="@DrawerCloseButtonClass" @onclick="CloseMobileMenu" type="button" aria-label="Close menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <CascadingValue Value="true" Name="IsMobileMode">
+                @ChildContent
+            </CascadingValue>
+        </aside>
     }
-}
+</div>
