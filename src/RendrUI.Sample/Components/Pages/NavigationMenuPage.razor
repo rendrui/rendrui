@@ -1,0 +1,104 @@
+@page "/navigation-menu"
+
+@using RendrUI.Components.NavigationMenu
+
+<h3 class="text-2xl font-bold mb-4">NavigationMenu Component</h3>
+
+
+<NavigationMenu>
+    <NavigationMenuList>
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>Home</NavigationMenuTrigger>
+            <NavigationMenuContent class="w-125">
+                <ul class="grid grid-cols-8 gap-2">
+                    <li class="col-span-3">
+                        <a class="flex h-full w-full flex-col justify-center p-4 select-none focus:shadow-md hover:bg-gray-100 rounded-sm"
+                            href="/">
+                            <div class="mb-2 text-lg font-medium sm:mt-4">
+                                RendrUI
+                            </div>
+                            <p class="text-muted-foreground text-sm leading-tight">
+                                Beautifully designed Blazor components built with Tailwind CSS.
+                            </p>
+                        </a>
+                    </li>
+                    <li class="col-span-5 space-y-2">
+                        <a href="#" class="px-4 py-2 hover:bg-gray-100 flex flex-col text-start rounded-sm">
+                            <span class="tex-sm">Introduction</span>
+                            <span class="text-sm text-gray-400">
+                                Re-usable components built using Radix UI and Tailwind CSS.
+                            </span>
+                        </a>
+
+                        <a href="#" class="px-4 py-2 hover:bg-gray-100 flex flex-col text-start rounded-sm">
+                            <span class="tex-sm">Installation</span>
+                            <span class="text-sm text-gray-400">
+                                How to install dependencies and structure your app.
+                            </span>
+                        </a>
+
+                        <a href="#" class="px-4 py-2 hover:bg-gray-100 flex flex-col text-start rounded-sm">
+                            <span class="tex-sm">Typography</span>
+                            <span class="text-sm text-gray-400">
+                                Styles for headings, paragraphs, lists...etc
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Button</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Card</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Navigation Menu</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Modal</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Tooltip</a></li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger Href="/about">Docs</NavigationMenuTrigger>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>List</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Accordion</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Tabs</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Dropdown</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Avatar</a></li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>Simple</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Badge</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Progress Bar</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Alert</a></li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Icon Library</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Theme Switcher</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Snackbar</a></li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+    </NavigationMenuList>
+</NavigationMenu>

@@ -1,0 +1,66 @@
+@namespace RendrUI.Components.NavigationMenu
+@using System.Runtime.InteropServices.Marshalling
+
+
+@if (ShouldShowContent)
+{
+    <div @attributes="AdditionalAttributes" class=@CssClass
+        @onmouseover="HandleMouseOver"
+        @onmouseleave="HandleMouseLeave">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter(Name = "IsMobileMode")]
+    public bool IsMobileMode { get; set; }
+
+    [CascadingParameter]
+    private NavigationMenuItem? ParentItem { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool ShouldShowContent => ParentItem is not null && ParentItem.IsOpen;
+    private bool activatedFromContent = true;
+
+
+    protected override void OnInitialized()
+    {
+        ParentItem?.RegisterContent();
+        base.OnInitialized();
+    }
+
+    private void HandleMouseOver()
+    {
+        if (!IsMobileMode)
+        {
+            ParentItem?.CancelCloseMenu();
+        }
+    }
+
+    private async Task HandleMouseLeave(MouseEventArgs e)
+    {
+        if (!IsMobileMode && ParentItem != null)
+        {
+            await ParentItem.StartCloseMenuDelay(e, activatedFromContent);
+        }
+    }
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuContent, additionalClass, IsMobileMode);
+        }
+    }
+}

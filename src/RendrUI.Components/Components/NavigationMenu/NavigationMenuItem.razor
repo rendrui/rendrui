@@ -1,0 +1,142 @@
+@namespace RendrUI.Components.NavigationMenu
+@using Microsoft.JSInterop
+
+<li @ref="myLi" @attributes="AdditionalAttributes" class="@CssClass"
+    @onmouseover="HandleMouseOver"
+    @onmouseleave="HandleMouseLeave">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</li>
+
+
+@code {
+    [CascadingParameter(Name = "IsMobileMode")]
+    public bool IsMobileMode { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    internal bool HasContent { get; private set; } = false;
+    internal bool IsOpen { get; set; } = false;
+    private CancellationTokenSource? _cts;
+    private ElementReference myLi;
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuItem, additionalClass, IsMobileMode);
+        }
+    }
+
+    internal void RegisterContent()
+    {
+        HasContent = true;
+        StateHasChanged();
+    }
+
+    internal void ToggleMenu()
+    {
+        IsOpen = !IsOpen;
+        StateHasChanged();
+    }
+
+
+    internal void OpenMenu()
+    {
+        // In mobile mode, use toggle behavior
+        if (IsMobileMode)
+        {
+            ToggleMenu();
+            return;
+        }
+
+        // Desktop mode - open on hover
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    private void HandleMouseOver()
+    {
+        if (!IsMobileMode)
+        {
+            CancelCloseMenu();
+        }
+    }
+
+    private async Task HandleMouseLeave(MouseEventArgs e)
+    {
+        if (!IsMobileMode)
+        {
+            await StartCloseMenuDelay(e);
+        }
+    }
+
+    public void CancelCloseMenu()
+    {
+        _cts?.Cancel();
+        _cts = null;
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    public async Task StartCloseMenuDelay(MouseEventArgs e, bool fromContent = false)
+    {
+        var rect = await JS.InvokeAsync<BoundingClientRect>("getBoundingClientRect", myLi);
+        if (e.ClientY > rect.Bottom && !fromContent)
+        {
+            CloseMenuWithDelay();
+            return;
+        }
+
+        CloseMenuWithoutDelay();
+    }
+
+    internal void CloseMenuWithoutDelay()
+    {
+        _cts?.Cancel();
+        IsOpen = false;
+        StateHasChanged();
+    }
+
+    internal async void CloseMenuWithDelay()
+    {
+        if (IsMobileMode) return; // No delay in mobile mode
+
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(200, _cts.Token);
+            IsOpen = false;
+            StateHasChanged();
+        }
+        catch (TaskCanceledException)
+        { }
+    }
+
+    private class BoundingClientRect
+    {
+        public double Left { get; set; }
+        public double Top { get; set; }
+        public double Right { get; set; }
+        public double Bottom { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+    }
+}

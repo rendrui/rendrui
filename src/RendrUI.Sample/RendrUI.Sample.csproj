@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RendrUI.Components\RendrUI.Components.csproj" />
-    <ProjectReference Include="..\RendrUI.Icons\RendrUI.Icons.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

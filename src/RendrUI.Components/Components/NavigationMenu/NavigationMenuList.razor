@@ -1,0 +1,34 @@
+@namespace RendrUI.Components.NavigationMenu
+@using System.Text.RegularExpressions
+
+
+<ul @attributes="AdditionalAttributes" data-slot="nav-menu-list" class="@CssClass">
+    @ChildContent
+</ul>
+
+
+@code {
+    [CascadingParameter(Name = "IsMobileMode")]
+    public bool IsMobileMode { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+
+    private string CssClass
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass += @class.ToString() ?? string.Empty;
+            }
+            return NavigationMenuClasses.Build(NavigationMenuType.NavigationMenuList, additionalClass, IsMobileMode);
+        }
+    }
+}
