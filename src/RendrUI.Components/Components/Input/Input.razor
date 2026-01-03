@@ -1,0 +1,8 @@
+@using Microsoft.AspNetCore.Components.Forms
+
+@inherits InputBase<string>
+
+@namespace RendrUI.Components.Input
+
+<input @attributes="AdditionalAttributes" class="@ComputedClass" type="@TypeAttr" value="@CurrentValueAsString"
+    @oninput="OnInput" />
