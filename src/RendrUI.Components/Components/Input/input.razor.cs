@@ -6,6 +6,9 @@ namespace RendrUI.Components.Input;
 
 public partial class Input : InputBase<string>
 {
+    [Parameter]
+    public InputSize Size { get; set; } = InputSize.Default;
+
     protected bool HasValidationError =>
         EditContext?.GetValidationMessages(FieldIdentifier).Any() == true;
 
@@ -36,7 +39,7 @@ public partial class Input : InputBase<string>
                 additionalClass = @class?.ToString() ?? string.Empty;
             }
 
-            return InputClasses.Build(HasValidationError, additionalClass);
+            return InputClasses.Build(HasValidationError, Size, additionalClass);
         }
     }
 

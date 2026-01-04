@@ -1,9 +1,11 @@
+using RendrUI.Components.Utils;
+
 namespace RendrUI.Components.Input;
 
 internal static class InputClasses
 {
     private const string Base =
-        "flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm " +
+        "flex h-10 w-full rounded-sm border bg-transparent px-3 text-sm " +
         "transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium " +
         "placeholder:text-muted-foreground focus-visible:outline-none " +
         "focus-visible:ring-1 focus-visible:ring-ring " +
@@ -15,9 +17,16 @@ internal static class InputClasses
     private const string ErrorClasses =
         "border-destructive focus-visible:ring-destructive";
 
-    public static string Build(bool hasValidationErrors, string? extra)
-        => string.Join(
-            " ",
-            Base,
-            hasValidationErrors ? ErrorClasses : NormalClasses);
+    private static readonly Dictionary<InputSize, string> Sizes = new()
+    {
+        [InputSize.Sm] = "h-9 w-32",
+        [InputSize.Default] = "h-10 w-64",
+        [InputSize.Lg] = "h-11 w-96"
+    };
+
+    public static string Build(bool hasValidationErrors, InputSize size, string? extra)
+    {
+        var stateClasses = hasValidationErrors ? ErrorClasses : NormalClasses;
+        return TailwindMerger.Merge(Base, stateClasses, Sizes[size], extra ?? "");
+    }
 }
