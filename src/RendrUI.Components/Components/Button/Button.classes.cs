@@ -32,8 +32,8 @@ internal static class ButtonClasses
     private static readonly Dictionary<ButtonSize, string> Sizes = new()
     {
         [ButtonSize.Default] = "h-10 px-4 py-2",
-        [ButtonSize.Sm] = "h-9 rounded-md px-3",
-        [ButtonSize.Lg] = "h-11 rounded-md px-8",
+        [ButtonSize.Sm] = "h-9 rounded-sm px-3",
+        [ButtonSize.Lg] = "h-11 rounded-sm px-8",
         [ButtonSize.Icon] = "h-10 w-10"
     };
 
