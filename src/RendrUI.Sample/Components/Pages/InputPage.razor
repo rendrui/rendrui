@@ -1,0 +1,11 @@
+@page "/input"
+@using RendrUI.Components.Input
+
+
+<h3>Input Page</h3>
+
+<Input @bind-Value="Value" type="text" placeholder="just a placeholder" />
+
+@code {
+    public string Value { get; set; } = string.Empty;
+}

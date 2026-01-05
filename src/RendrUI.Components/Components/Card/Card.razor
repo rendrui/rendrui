@@ -1,28 +1,5 @@
 @namespace RendrUI.Components.Card
 
-<div @attributes="AdditionalAttributes" data-slot="card" class="@CssClass">
+<div @attributes="AdditionalAttributes" data-slot="card" class="@ClassNames">
     @ChildContent
 </div>
-
-
-@code {
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-
-    [Parameter(CaptureUnmatchedValues = true)]
-    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private string CssClass
-    {
-        get
-        {
-            var additionalClass = string.Empty;
-            if (AdditionalAttributes is not null &&
-                AdditionalAttributes.TryGetValue("class", out var @class))
-            {
-                additionalClass = @class?.ToString() ?? string.Empty;
-            }
-            return CardClasses.Build(CardType.Card, additionalClass);
-        }
-    }
-}

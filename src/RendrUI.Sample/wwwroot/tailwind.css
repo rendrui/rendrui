@@ -13,7 +13,6 @@
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-400: oklch(70.7% 0.022 261.325);
-    --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -244,11 +243,17 @@
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
+  .mr-1 {
+    margin-right: calc(var(--spacing) * 1);
+  }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
+  }
+  .ml-1 {
+    margin-left: calc(var(--spacing) * 1);
   }
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
@@ -295,11 +300,20 @@
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
+  }
   .w-56 {
     width: calc(var(--spacing) * 56);
   }
+  .w-64 {
+    width: calc(var(--spacing) * 64);
+  }
   .w-80 {
     width: calc(var(--spacing) * 80);
+  }
+  .w-96 {
+    width: calc(var(--spacing) * 96);
   }
   .w-125 {
     width: calc(var(--spacing) * 125);
@@ -386,6 +400,13 @@
       margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+  .space-x-2 {
+    :where(& > :not(:last-child)) {
+      --tw-space-x-reverse: 0;
+      margin-inline-start: calc(calc(var(--spacing) * 2) * var(--tw-space-x-reverse));
+      margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));
+    }
+  }
   .self-start {
     align-self: flex-start;
   }
@@ -411,6 +432,16 @@
   .border-b {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
+  }
+  .border-l {
+    border-left-style: var(--tw-border-style);
+    border-left-width: 1px;
+  }
+  .border-border {
+    border-color: var(--border);
+  }
+  .border-destructive {
+    border-color: var(--destructive);
   }
   .border-gray-200 {
     border-color: var(--color-gray-200);
@@ -438,6 +469,9 @@
   }
   .bg-secondary {
     background-color: var(--secondary);
+  }
+  .bg-transparent {
+    background-color: transparent;
   }
   .bg-white {
     background-color: var(--color-white);
@@ -471,6 +505,9 @@
   }
   .pb-6 {
     padding-bottom: calc(var(--spacing) * 6);
+  }
+  .pl-2 {
+    padding-left: calc(var(--spacing) * 2);
   }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
@@ -603,6 +640,34 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  .file\:border-0 {
+    &::file-selector-button {
+      border-style: var(--tw-border-style);
+      border-width: 0px;
+    }
+  }
+  .file\:bg-transparent {
+    &::file-selector-button {
+      background-color: transparent;
+    }
+  }
+  .file\:text-sm {
+    &::file-selector-button {
+      font-size: var(--text-sm);
+      line-height: var(--tw-leading, var(--text-sm--line-height));
+    }
+  }
+  .file\:font-medium {
+    &::file-selector-button {
+      --tw-font-weight: var(--font-weight-medium);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+  .placeholder\:text-muted-foreground {
+    &::placeholder {
+      color: var(--muted-foreground);
+    }
+  }
   .hover\:bg-accent {
     &:hover {
       @media (hover: hover) {
@@ -684,10 +749,21 @@
       outline-style: none;
     }
   }
+  .focus-visible\:ring-1 {
+    &:focus-visible {
+      --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
   .focus-visible\:ring-2 {
     &:focus-visible {
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
+  .focus-visible\:ring-destructive {
+    &:focus-visible {
+      --tw-ring-color: var(--destructive);
     }
   }
   .focus-visible\:ring-ring {
@@ -715,6 +791,11 @@
   .disabled\:pointer-events-none {
     &:disabled {
       pointer-events: none;
+    }
+  }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
     }
   }
   .disabled\:opacity-50 {
@@ -870,6 +951,11 @@
   inherits: false;
   initial-value: 0;
 }
+@property --tw-space-x-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -968,6 +1054,7 @@
       --tw-skew-x: initial;
       --tw-skew-y: initial;
       --tw-space-y-reverse: 0;
+      --tw-space-x-reverse: 0;
       --tw-border-style: solid;
       --tw-leading: initial;
       --tw-font-weight: initial;
