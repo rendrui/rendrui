@@ -1,3 +1,5 @@
+using RendrUI.Components.Utils;
+
 namespace RendrUI.Components.Button;
 
 internal static class ButtonClasses
@@ -38,11 +40,10 @@ internal static class ButtonClasses
     };
 
     public static string Build(ButtonVariant variant, ButtonSize size, string? extra)
-        => string.Join(
-            " ",
+        => TailwindMerger.Merge(
             Base,
             Variants[variant],
             Sizes[size],
-            extra
+            extra ?? ""
         );
 }

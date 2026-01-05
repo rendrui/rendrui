@@ -1,6 +1,14 @@
 namespace RendrUI.Components.Button;
 
 
+public enum ButtonSize
+{
+    Default,
+    Sm,
+    Lg,
+    Icon
+}
+
 public enum ButtonVariant
 {
     Default,
