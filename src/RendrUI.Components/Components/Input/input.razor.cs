@@ -28,7 +28,7 @@ public partial class Input : InputBase<string>
         }
     }
 
-    protected string ComputedClass
+    protected string ClassNames
     {
         get
         {
@@ -58,5 +58,3 @@ public partial class Input : InputBase<string>
         return true;
     }
 }
-
-

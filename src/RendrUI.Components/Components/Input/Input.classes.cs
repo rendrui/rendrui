@@ -5,7 +5,7 @@ namespace RendrUI.Components.Input;
 internal static class InputClasses
 {
     private const string Base =
-        "flex h-10 w-full rounded-sm border bg-transparent px-3 text-sm " +
+        "flex w-full rounded-sm border bg-transparent px-3 text-sm " +
         "transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium " +
         "placeholder:text-muted-foreground focus-visible:outline-none " +
         "focus-visible:ring-1 focus-visible:ring-ring " +
