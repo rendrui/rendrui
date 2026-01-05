@@ -1,3 +1,5 @@
+using RendrUI.Components.Utils;
+
 namespace RendrUI.Components.Card;
 
 internal static class CardClasses
@@ -35,10 +37,9 @@ internal static class CardClasses
     };
 
     public static string Build(CardType type, string? extra)
-        => string.Join(
-            " ",
+        => TailwindMerger.Merge(
             Base,
             TypeClasses[type],
-            extra
+            extra ?? string.Empty
         );
 }
