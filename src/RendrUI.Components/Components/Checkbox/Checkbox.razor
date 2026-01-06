@@ -1,0 +1,8 @@
+@using Microsoft.AspNetCore.Components.Forms
+
+@inherits InputBase<bool>
+
+@namespace RendrUI.Components.Checkbox
+
+<input @attributes="AdditionalAttributes" data-checked="@CurrentValue" type="checkbox" class="@ClassNames"
+    checked="@CurrentValue" @onchange="OnChange" />
