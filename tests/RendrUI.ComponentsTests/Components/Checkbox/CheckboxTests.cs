@@ -23,6 +23,33 @@ public class CheckboxTests : TestContextBase
         input.HasAttribute("checked").ShouldBeFalse();
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Checkbox_Should_Set_Checked_And_DataChecked_Attributes(bool initialValue)
+    {
+        var value = initialValue;
+
+        var cut = Render<Checkbox>(parameters => parameters
+            .Add(p => p.Value, value)
+            .Add(p => p.ValueChanged, v => value = v)
+            .Add(p => p.ValueExpression, () => value));
+
+        var input = cut.Find("input");
+
+        // checked attribute
+        if (initialValue)
+        {
+            input.HasAttribute("checked").ShouldBeTrue();
+            input.HasAttribute("data-checked").ShouldBeTrue();
+        }
+        else
+        {
+            input.HasAttribute("checked").ShouldBeFalse();
+            input.HasAttribute("data-checked").ShouldBeFalse();
+        }
+    }
+
     [Fact]
     public void Checkbox_ShouldApplexpectedHeighty_DefaultSize()
     {
