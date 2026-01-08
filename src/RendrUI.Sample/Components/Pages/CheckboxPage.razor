@@ -1,0 +1,11 @@
+@page "/checkbox"
+@using RendrUI.Components.Checkbox
+
+
+<h3>Checkbox Page</h3>
+
+<Checkbox @bind-Value="Value" />
+
+@code {
+    public bool Value { get; set; } = false;
+}
