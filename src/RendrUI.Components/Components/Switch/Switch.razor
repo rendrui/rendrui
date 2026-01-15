@@ -1,0 +1,6 @@
+@namespace RendrUI.Components.Switch
+
+<button @attributes="AdditionalAttributes" data-slot="@(@Value ? "checked" : "unchecked")" type="button" role="switch" class="@TrackClassNames"
+    aria-checked="@Value" disabled="@Disabled" @onclick="Toggle">
+    <span class="@ThumbClassNames" />
+</button>
