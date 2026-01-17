@@ -1,0 +1,39 @@
+@typeparam TValue
+
+@namespace RendrUI.Components.Select
+@using RendrUI.Components.Utils
+
+
+@if (Root.IsOpen)
+{
+    <div @attributes="AdditionalAttributes" class="@ClassNames">
+        @ChildContent
+    </div>
+}
+
+
+@code {
+    [CascadingParameter]
+    public Select<TValue> Root { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    internal string ClassNames
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+
+            return SelectClasses.BuildContent(additionalClass);
+        }
+    }
+}

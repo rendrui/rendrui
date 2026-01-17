@@ -1,0 +1,77 @@
+@typeparam TValue
+
+@namespace RendrUI.Components.Select
+
+<button @attributes="AdditionalAttributes" type="button" class="@ClassNames" @onclick="OnClick">
+    @if (SelectedLabel is not null)
+    {
+        <span>@SelectedLabel</span>
+    }
+    else
+    {
+        <span class="text-muted">@Placeholder</span>
+    }
+</button>
+
+@code {
+    [CascadingParameter]
+    public Select<TValue> Root { get; set; } = default!;
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Select an option";
+
+    [Parameter]
+    public bool HasError { get; set; } = false;
+
+    [Parameter]
+    public SelectSize Size { get; set; } = SelectSize.Default;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+
+    private string ClassNames
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+
+            return SelectClasses.BuildTrigger(
+            HasError,
+            Size,
+            additionalClass);
+        }
+    }
+
+    private string? SelectedLabel { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        SelectItem<TValue>.OnItemRegistered += HandleItemRegistered;
+    }
+
+    private void HandleItemRegistered(SelectItem<TValue> item)
+    {
+        if (EqualityComparer<TValue>.Default.Equals(Root.Value, item.Value))
+        {
+            SelectedLabel = item.ChildContentText;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnClick()
+    {
+        await Root.ToggleOpen();
+    }
+
+    public void Dispose()
+    {
+        SelectItem<TValue>.OnItemRegistered -= HandleItemRegistered;
+    }
+}

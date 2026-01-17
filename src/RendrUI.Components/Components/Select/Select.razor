@@ -1,0 +1,40 @@
+@typeparam TValue
+
+@namespace RendrUI.Components.Select
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public TValue Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    internal bool IsOpen { get; private set; } = false;
+
+
+    internal async Task ToggleOpen()
+    {
+        IsOpen = !IsOpen;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    internal async Task Close()
+    {
+        IsOpen = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    internal async Task SelectValue(TValue value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(value);
+        await Close();
+    }
+}

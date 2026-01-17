@@ -1,0 +1,23 @@
+@page "/select"
+@using RendrUI.Components.Select
+
+<h3>Select Page</h3>
+
+
+<Select TValue="string" @bind-Value="Fruit">
+
+    <SelectTrigger TValue="string" Placeholder="Select fruit" />
+
+    <SelectContent TValue="string">
+        <SelectItem TValue="string" Value="@("apple")">Apple</SelectItem>
+        <SelectItem TValue="string" Value="@("banana")">Banana</SelectItem>
+        <SelectItem TValue="string" Value="@("orange")">Orange</SelectItem>
+    </SelectContent>
+
+</Select>
+
+<p>Selected: @Fruit</p>
+
+@code {
+    string? Fruit;
+}

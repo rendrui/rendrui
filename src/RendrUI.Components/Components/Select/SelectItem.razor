@@ -1,0 +1,66 @@
+@typeparam TValue
+
+@namespace RendrUI.Components.Select
+
+
+<div @attributes="AdditionalAttributes" class="@ClassNames" role="option" @onclick="Select">
+    @if (IsSelected)
+    {
+        <span class="absolute left-2">✓</span>
+    }
+
+    <span class="ml-6">
+        @ChildContent
+    </span>
+</div>
+
+
+@code {
+    [CascadingParameter]
+    public Select<TValue> Root { get; set; } = default!;
+
+    [Parameter]
+    public TValue Value { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+
+    internal static event Action<SelectItem<TValue>>? OnItemRegistered;
+
+    private bool IsSelected =>
+    EqualityComparer<TValue>.Default.Equals(Root.Value, Value);
+
+    internal string ClassNames
+    {
+        get
+        {
+            var additionalClass = string.Empty;
+            if (AdditionalAttributes is not null &&
+            AdditionalAttributes.TryGetValue("class", out var @class))
+            {
+                additionalClass = @class.ToString() ?? string.Empty;
+            }
+
+            return SelectClasses.BuildItem(additionalClass);
+        }
+    }
+
+
+    internal string ChildContentText =>
+    (ChildContent?.ToString() ?? Value?.ToString()) ?? "";
+
+
+    protected override void OnInitialized()
+    {
+        OnItemRegistered?.Invoke(this);
+    }
+
+    private async Task Select()
+    {
+        await Root.SelectValue(Value);
+    }
+}
