@@ -38,19 +38,19 @@ internal static class SelectClasses
     }
 
     public const string Content =
-        "relative z-50 min-w-[8rem] overflow-hidden rounded-md border " +
+        "absolute left-0 top-full z-50 mt-1 w-full overflow-hidden rounded-md border " +
         "bg-popover text-popover-foreground shadow-md " +
-        "animate-in fade-in-0 zoom-in-95";
+        "animate-in fade-in-0 zoom-in-95 origin-top";
 
     public static string BuildContent(string? extras) =>
         TailwindMerger.Merge(Content, extras ?? "");
 
     public const string Item =
-        "relative flex w-full cursor-pointer select-none items-center " +
+        "relative flex w-full hover:bg-accent cursor-pointer select-none items-center " +
         "rounded-sm px-2 py-1.5 text-sm outline-none " +
         "focus:bg-accent focus:text-accent-foreground " +
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
 
     public static string BuildItem(string? extras) =>
-        TailwindMerger.Merge(Content, extras ?? "");
+        TailwindMerger.Merge(Item, extras ?? "");
 }

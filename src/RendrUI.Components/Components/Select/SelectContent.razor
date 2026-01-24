@@ -1,5 +1,3 @@
-@typeparam TValue
-
 @namespace RendrUI.Components.Select
 @using RendrUI.Components.Utils
 
@@ -7,14 +5,16 @@
 @if (Root.IsOpen)
 {
     <div @attributes="AdditionalAttributes" class="@ClassNames">
-        @ChildContent
+        <divc class="p-1 max-h-60 overflow-auto">
+            @ChildContent
+        </divc>
     </div>
 }
 
 
 @code {
     [CascadingParameter]
-    public Select<TValue> Root { get; set; } = default!;
+    public ISelectContext Root { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

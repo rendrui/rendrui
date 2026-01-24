@@ -1,6 +1,5 @@
-@typeparam TValue
-
 @namespace RendrUI.Components.Select
+@using System.Reflection
 
 <button @attributes="AdditionalAttributes" type="button" class="@ClassNames" @onclick="OnClick">
     @if (SelectedLabel is not null)
@@ -9,13 +8,13 @@
     }
     else
     {
-        <span class="text-muted">@Placeholder</span>
+        <span class="text-black">@Placeholder</span>
     }
 </button>
 
 @code {
     [CascadingParameter]
-    public Select<TValue> Root { get; set; } = default!;
+    public ISelectContext Root { get; set; } = default!;
 
     [Parameter]
     public string Placeholder { get; set; } = "Select an option";
@@ -48,30 +47,11 @@
         }
     }
 
-    private string? SelectedLabel { get; set; }
+    private string? SelectedLabel => Root.SelectedLabel;
 
-
-    protected override void OnInitialized()
-    {
-        SelectItem<TValue>.OnItemRegistered += HandleItemRegistered;
-    }
-
-    private void HandleItemRegistered(SelectItem<TValue> item)
-    {
-        if (EqualityComparer<TValue>.Default.Equals(Root.Value, item.Value))
-        {
-            SelectedLabel = item.ChildContentText;
-            StateHasChanged();
-        }
-    }
 
     private async Task OnClick()
     {
         await Root.ToggleOpen();
-    }
-
-    public void Dispose()
-    {
-        SelectItem<TValue>.OnItemRegistered -= HandleItemRegistered;
     }
 }

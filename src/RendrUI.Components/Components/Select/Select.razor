@@ -1,9 +1,12 @@
 @typeparam TValue
+@implements ISelectContext
 
 @namespace RendrUI.Components.Select
 
-<CascadingValue Value="this">
-    @ChildContent
+<CascadingValue Value="(ISelectContext)this">
+    <div class="relative inline-block w-full">
+        @ChildContent
+    </div>
 </CascadingValue>
 
 @code {
@@ -16,25 +19,35 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    internal bool IsOpen { get; private set; } = false;
+    public bool IsOpen { get; private set; } = false;
+    public string? SelectedLabel { get; set; }
+    public object? CurrentValue => Value;
+    public Type ValueType => typeof(TValue);
 
 
-    internal async Task ToggleOpen()
+    public void SetSelectLabel(string label)
+    {
+        SelectedLabel = label;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async Task ToggleOpen()
     {
         IsOpen = !IsOpen;
         await InvokeAsync(StateHasChanged);
     }
 
-    internal async Task Close()
+    public async Task Close()
     {
         IsOpen = false;
         await InvokeAsync(StateHasChanged);
     }
 
-    internal async Task SelectValue(TValue value)
+    public async Task SelectValue(object value)
     {
-        Value = value;
-        await ValueChanged.InvokeAsync(value);
+        Value = (TValue)value;
+        SetSelectLabel(SelectedLabel ?? string.Empty);
+        await ValueChanged.InvokeAsync(Value);
         await Close();
     }
 }

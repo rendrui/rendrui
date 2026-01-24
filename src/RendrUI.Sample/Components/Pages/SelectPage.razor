@@ -4,17 +4,20 @@
 <h3>Select Page</h3>
 
 
-<Select TValue="string" @bind-Value="Fruit">
 
-    <SelectTrigger TValue="string" Placeholder="Select fruit" />
+<div class="flex flex-wrap items-center gap-4 md:flex-col">
+    <Select TValue="string" @bind-Value="Fruit">
 
-    <SelectContent TValue="string">
-        <SelectItem TValue="string" Value="@("apple")">Apple</SelectItem>
-        <SelectItem TValue="string" Value="@("banana")">Banana</SelectItem>
-        <SelectItem TValue="string" Value="@("orange")">Orange</SelectItem>
-    </SelectContent>
+        <SelectTrigger Placeholder="Select fruit" />
 
-</Select>
+        <SelectContent>
+            <SelectItem Value="@("apple")">Apple</SelectItem>
+            <SelectItem Value="@("banana")">Banana</SelectItem>
+            <SelectItem Value="@("orange")">Orange</SelectItem>
+        </SelectContent>
+
+    </Select>
+</div>
 
 <p>Selected: @Fruit</p>
 
